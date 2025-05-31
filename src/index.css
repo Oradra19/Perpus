@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tambahkan ke file CSS Anda */
+.slick-dots li button:before {
+    font-size: 16px; /* Perbesar ukuran titik */
+    color: gray; /* Warna default */
+  }
+  
+.slick-dots li.slick-active button:before {
+    color: blue; /* Warna titik aktif */
+  }
+
+/* Ornamen Kanan */
+.ornament-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.ornament-right div {
+  background-color: #ffc107; 
+  width: 20px;
+  height: 20px;
+}
+
+.ornament-right div:nth-child(2) {
+  background-color: #1e3a8a; 
+  width: 15px;
+  height: 15px;
+}
+
+.ornament-right div:nth-child(3) {
+  background-color: #ffc107;
+  width: 10px;
+  height: 10px;
+}
+
+/* Ornamen Kiri */
+.ornament-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.ornament-left div {
+  background-color: #ffc107; 
+  width: 20px;
+  height: 20px;
+}
+
+.ornament-left div:nth-child(2) {
+  background-color: #1e3a8a; 
+  width: 15px;
+  height: 15px;
+}
+
+.ornament-left div:nth-child(3) {
+  background-color: #ffc107;
+  width: 10px;
+  height: 10px;
+}
