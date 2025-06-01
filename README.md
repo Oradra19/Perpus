@@ -30,27 +30,31 @@ Aplikasi web untuk mendata dan mengelola barang hilang di lingkungan perpustakaa
 ## 🚀 Cara Menjalankan
 
 1. Clone Front-End  
+```
 git clone https://github.com/Oradra19/Perpus.git  
 cd perpus
-
+```
 2. Install dependensi  
+```
 npm install  
-
+```
 3. Clone Back-End  
+```
 git clone https://github.com/Oradra19/PerpusBE.git 
-
-1. Install dependensi  
+```
+4. Install dependensi  
+```
 npm install  
+```
+5. Buka PerpusBE dan Masukkan file .env ke dalam direktori PerpusBE
 
-1. Buka PerpusBE dan Masukkan file .env ke dalam direktori PerpusBE
+6. Buka Laragon atau XAMPP dan buat database dengan nama **barang_hilang** kemudian import Database yang telah diberikan
 
-2. Buka Laragon atau XAMPP dan buat database dengan nama **barang_hilang** kemudian import Database yang telah diberikan
+7. Jalankan Front-end dengan command npm run dev
 
-3. Jalankan Front-end dengan command npm run dev
+8. Jalankan Back-end dengan command nodemon server
 
-4. Jalankan Back-end dengan command nodemon server
-
-5. Lihat ke terminal Front-End lalu Ctrl + Left clik pada http://localhost:5173/
+9. Lihat ke terminal Front-End lalu Ctrl + Left clik pada http://localhost:5173/
 
 ---
 
