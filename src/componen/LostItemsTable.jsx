@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+const DokumenDefault = "/dokumen.jpg";
 const LostItemsTable = ({ lostItemsData, refreshData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDate, setFilterDate] = useState("");
@@ -115,11 +116,24 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
     formData.append("kategori", currentItem.kategori);
     formData.append("is_utama", currentItem.is_utama);
 
-    currentItem.url_foto.forEach((file, i) => {
-      if (file instanceof File) {
-        formData.append(`url_foto`, file);
+    if (currentItem.kategori === "Dokumen") {
+      try {
+        const response = await fetch(DokumenDefault);
+        const blob = await response.blob();
+        const file = new File([blob], "dokumen.jpg", { type: blob.type });
+        formData.append("url_foto", file);
+      } catch (err) {
+        console.error("Gagal mengambil gambar default dokumen", err);
       }
-    });
+    } else {
+      currentItem.url_foto.forEach((file, i) => {
+        if (file instanceof File) {
+          formData.append("url_foto", file);
+        } else {
+          console.warn(`Foto ke-${i + 1} tidak valid atau belum diisi`);
+        }
+      });
+    }
 
     try {
       if (editingIndex !== null) {
@@ -141,7 +155,27 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCurrentItem({ ...currentItem, [name]: value });
+
+    if (name === "kategori") {
+      if (value === "Dokumen") {
+        setCurrentItem((prev) => ({
+          ...prev,
+          kategori: value,
+          url_foto: [DokumenDefault, null, null, null],
+        }));
+      } else {
+        setCurrentItem((prev) => ({
+          ...prev,
+          kategori: value,
+          url_foto: [null, null, null, null],
+        }));
+      }
+    } else {
+      setCurrentItem((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   return (
@@ -291,16 +325,33 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
                 <option value="ditemukan">Ditemukan</option>
                 <option value="arsip">Arsip</option>
               </select>
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className="mb-2">
-                  <label>Foto {i + 1}</label>
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, i)}
-                    className="w-full p-1"
-                  />
+              {currentItem.kategori !== "Dokumen" ? (
+                [0, 1, 2, 3].map((i) => (
+                  <div key={i} className="mb-2">
+                    <label>Foto {i + 1}</label>
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, i)}
+                      className="w-full p-1"
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="mb-2">
+                  <label>Foto (Otomatis)</label>
+                  <div className="w-full border p-2 rounded bg-gray-100">
+                    <img
+                      src={DokumenDefault}
+                      alt="Foto default dokumen"
+                      className="max-h-48 mx-auto"
+                    />
+                  </div>
+                  <small className="text-sm text-gray-500 italic">
+                    Gambar ini akan otomatis digunakan untuk kategori Dokumen.
+                  </small>
                 </div>
-              ))}
+              )}
+
               <div className="flex justify-end mt-4 gap-2">
                 <button
                   type="button"

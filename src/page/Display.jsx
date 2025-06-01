@@ -9,7 +9,7 @@ const Display = () => {
   const [visibleItems, setVisibleItems] = useState(8);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState("");
-  const [searchDate, setSearchDate] = useState('');
+  const [filterKategori, setFilterKategori] = useState('');
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -40,66 +40,71 @@ const Display = () => {
     navigate(`/detailbarang/${id}`);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleDateChange = (e) => {
-    setSearchDate(e.target.value);
-  };
-
   const filteredItems = lostItemsData.filter((item) => {
     const matchesSearch = item.nama_barang
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    const itemDate = new Date(item.tanggal_ditemukan).toLocaleDateString(
-      "sv-SE"
-    );
+
+    const itemDate = new Date(item.tanggal_ditemukan).toLocaleDateString("sv-SE");
     const matchesDate = filterDate ? itemDate === filterDate : true;
-    return matchesSearch && matchesDate;
+
+    const matchesKategori = filterKategori ? item.kategori === filterKategori : true;
+
+    return matchesSearch && matchesDate && matchesKategori;
   });
 
+  // Mengambil semua kategori unik dari data
+  const uniqueCategories = [...new Set(lostItemsData.map(item => item.kategori))];
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <NavbarStay />
 
       <div className="flex-grow container mx-auto px-4 py-16">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Display Barang Tertinggal</h1>
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-10">Barang Tertinggal</h1>
 
-        <div className="flex justify-center space-x-4 mb-8">
+        {/* Filter Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
           <input
             type="text"
-            placeholder="Cari berdasarkan nama"
-            className="border border-gray-300 rounded-lg px-4 py-2 w-1/3"
+            placeholder="Cari berdasarkan nama barang..."
+            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-yellow-400"
             value={searchTerm}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <input
-          type="date"
-          value={filterDate}
-          onChange={(e) => setFilterDate(e.target.value)}
-          className="border border-gray-300 rounded-lg px-4 py-2 w-1/3"
-        />
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-yellow-400"
+          />
+          <select
+            value={filterKategori}
+            onChange={(e) => setFilterKategori(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring-2 focus:ring-yellow-400"
+          >
+            <option value="">Semua Kategori</option>
+            {uniqueCategories.map((kategori, index) => (
+              <option key={index} value={kategori}>{kategori}</option>
+            ))}
+          </select>
         </div>
 
+        {/* Display Items */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {filteredItems.slice(0, visibleItems).map((item) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md p-4">
+            <div key={item.id} className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col">
               <img
                 src={item.is_utama}
                 alt="foto barang"
-                className="w-full h-56 object-cover mb-2 rounded"
+                className="w-full h-48 object-cover rounded-lg mb-4"
               />
-              <h2 className="text-lg font-bold text-gray-800">{item.nama_barang}</h2>
-              <p className="text-gray-600 text-sm">
-                <strong>Lokasi Ditemukan:</strong> {item.lokasi_ditemukan}
-              </p>
-              <p className="text-gray-600 text-sm">
-                <strong>Tanggal Ditemukan:</strong>{" "}
-                {new Date(item.tanggal_ditemukan).toLocaleDateString('id-ID')}
-              </p>
+              <h2 className="text-lg font-semibold text-gray-800 mb-1">{item.nama_barang}</h2>
+              <p className="text-sm text-gray-500 mb-1"><strong>Kategori:</strong> {item.kategori}</p>
+              <p className="text-sm text-gray-500 mb-1"><strong>Lokasi:</strong> {item.lokasi_ditemukan}</p>
+              <p className="text-sm text-gray-500 mb-3"><strong>Tanggal:</strong> {new Date(item.tanggal_ditemukan).toLocaleDateString('id-ID')}</p>
               <button
-                className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition mt-4"
+                className="mt-auto bg-yellow-400 hover:bg-yellow-500 text-white font-medium py-2 rounded-lg"
                 onClick={() => handleDetailClick(item.id)}
               >
                 Selengkapnya
@@ -108,19 +113,21 @@ const Display = () => {
           ))}
         </div>
 
+        {/* Load More Button */}
         {visibleItems < filteredItems.length && (
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center mt-10">
             <button
               onClick={handleLoadMore}
-              className="text-blue-600 hover:underline"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition"
             >
               Lihat Lainnya
             </button>
           </div>
         )}
 
+        {/* No Data */}
         {filteredItems.length === 0 && (
-          <p className="text-center text-gray-500 mt-8">Tidak ada barang yang ditemukan.</p>
+          <p className="text-center text-gray-500 mt-10">Tidak ada barang yang ditemukan.</p>
         )}
       </div>
 
