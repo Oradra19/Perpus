@@ -9,6 +9,7 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [selectedStatusItem, setSelectedStatusItem] = useState(null);
 
   const [currentItem, setCurrentItem] = useState({
@@ -64,8 +65,15 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
       await updateNoPengambil(selectedStatusItem); // kirim ke backend
       setIsEditStatusModalOpen(false);
       refreshData(); // refresh data
+
+      Swal.fire("Berhasil!", "Status barang berhasil diperbarui.", "success");
     } catch (err) {
       console.error("Gagal update status", err);
+      Swal.fire(
+        "Gagal!",
+        "Terjadi kesalahan saat memperbarui status.",
+        "error"
+      );
     }
   };
 
@@ -106,6 +114,7 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setIsSaving(true); // Mulai menyimpan
 
     const formData = new FormData();
     formData.append("nama_barang", currentItem.nama_barang);
@@ -129,8 +138,6 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
       currentItem.url_foto.forEach((file, i) => {
         if (file instanceof File) {
           formData.append("url_foto", file);
-        } else {
-          console.warn(`Foto ke-${i + 1} tidak valid atau belum diisi`);
         }
       });
     }
@@ -142,14 +149,18 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
           `http://localhost:3000/api/barang/${editedItem.id}`,
           formData
         );
+        Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
       } else {
         await axios.post("http://localhost:3000/api/barang", formData);
+        Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
       }
       refreshData();
       closeModal();
     } catch (error) {
       console.error("Error saving item:", error);
       Swal.fire("Gagal!", "Terjadi kesalahan saat menyimpan item.", "error");
+    } finally {
+      setIsSaving(false); // Proses selesai
     }
   };
 
@@ -362,9 +373,12 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                  disabled={isSaving}
+                  className={`px-4 py-2 rounded text-white ${
+                    isSaving ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
+                  }`}
                 >
-                  Simpan
+                  {isSaving ? "Menyimpan..." : "Simpan"}
                 </button>
               </div>
             </form>

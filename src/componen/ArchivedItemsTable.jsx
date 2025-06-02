@@ -36,8 +36,15 @@ const ArchivedItemsTable = ({ archivedItemsData, refreshData }) => {
       await updateNoPengambil(selectedStatusItem); // kirim ke backend
       setIsEditStatusModalOpen(false);
       refreshData(); // refresh data
+
+      Swal.fire("Berhasil!", "Status barang berhasil diperbarui.", "success");
     } catch (err) {
       console.error("Gagal update status", err);
+      Swal.fire(
+        "Gagal!",
+        "Terjadi kesalahan saat memperbarui status.",
+        "error"
+      );
     }
   };
 
