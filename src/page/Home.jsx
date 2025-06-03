@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../componen/Navbar";
 import Footer from "../componen/Footer";
 import home from "../assets/home.jpg";
@@ -10,43 +10,48 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import api from "axios"; 
+import api from "axios";
 
 const HomePage = () => {
   const [lostItemsData, setLostItemsData] = useState([]);
   const [activeFaq, setActiveFaq] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    AOS.init({ duration: 10 });
 
     fetchData();
   }, []);
 
-const fetchData = async () => {
-  try {
-    const lostItemsResponse = await api.get('http://localhost:3000/api/barang/status/hilang');
+  const fetchData = async () => {
+    try {
+      const lostItemsResponse = await api.get(
+        "http://localhost:3000/api/barang/status/hilang"
+      );
 
-    if (Array.isArray(lostItemsResponse.data)) {
-      const sortedData = lostItemsResponse.data
-        .sort((a, b) => new Date(b.tanggal_ditemukan) - new Date(a.tanggal_ditemukan)) 
-        .slice(0, 5); 
+      if (Array.isArray(lostItemsResponse.data)) {
+        const sortedData = lostItemsResponse.data
+          .sort(
+            (a, b) =>
+              new Date(b.tanggal_ditemukan) - new Date(a.tanggal_ditemukan)
+          )
+          .slice(0, 5);
 
-      setLostItemsData(sortedData);
-    } else {
-      setLostItemsData([]);
+        setLostItemsData(sortedData);
+      } else {
+        setLostItemsData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
+  };
 
   const toggleFaq = (index) => {
     setActiveFaq(activeFaq === index ? null : index);
   };
 
   const handleSeeMore = () => {
-    navigate("/display"); 
+    navigate("/display");
   };
 
   const sliderSettings = {
@@ -115,22 +120,25 @@ const fetchData = async () => {
           <Slider {...sliderSettings}>
             {lostItemsData.map((item) => (
               <Link to={`/detailbarang/${item.id}`} key={item.id}>
-              <div key={item.id} className="p-4">
-                <div className="bg-gray-100 p-4 rounded shadow hover:shadow-lg transition-shadow duration-300">
-                  <img
-                    src={`${item.is_utama}`}
-                    alt="foto barang"
-                    className="w-full h-56 object-cover mb-2 rounded"
-                  />
-                  <p className="text-center font-semibold">{item.nama_barang}</p>
+                <div key={item.id} className="p-4">
+                  <div className="bg-gray-100 p-4 rounded shadow hover:shadow-lg transition-shadow duration-300">
+                    <img
+                      src={`${item.is_utama}`}
+                      alt="foto barang"
+                      className="w-full h-56 object-cover mb-2 rounded"
+                    />
+                    <p className="text-center font-semibold">
+                      {item.nama_barang}
+                    </p>
+                  </div>
                 </div>
-              </div></Link>
+              </Link>
             ))}
           </Slider>
         </div>
-        
+
         <div className="text-center mt-12 mb-8">
-          <button 
+          <button
             onClick={handleSeeMore}
             className="bg-blue-600 hover:bg-blue=-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105"
           >
@@ -140,7 +148,6 @@ const fetchData = async () => {
       </section>
 
       <section className="relative" data-aos="fade-up" id="faq">
-
         <div className="bg-yellow-300 pt-16 pb-20">
           <div className="max-w-6xl mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center gap-10">

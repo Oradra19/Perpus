@@ -2,7 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const DokumenDefault = "/dokumen.jpg";
+const kategoriOtomatis = ["Dokumen", "SIM", "KTP", "STNK", "ATM"];
+const defaultImages = {
+  Dokumen: "/dokumen.png",
+  SIM: "/sim.jpg",
+  KTP: "/ktp.jpg",
+  STNK: "/stnk.jpg",
+  ATM: "/atm.jpg",
+};
 const LostItemsTable = ({ lostItemsData, refreshData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterDate, setFilterDate] = useState("");
@@ -125,14 +132,21 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
     formData.append("kategori", currentItem.kategori);
     formData.append("is_utama", currentItem.is_utama);
 
-    if (currentItem.kategori === "Dokumen") {
+    if (kategoriOtomatis.includes(currentItem.kategori)) {
       try {
-        const response = await fetch(DokumenDefault);
+        const defaultImage = defaultImages[currentItem.kategori];
+        const response = await fetch(defaultImage);
         const blob = await response.blob();
-        const file = new File([blob], "dokumen.jpg", { type: blob.type });
+        const file = new File(
+          [blob],
+          `${currentItem.kategori.toLowerCase()}.png`,
+          {
+            type: blob.type,
+          }
+        );
         formData.append("url_foto", file);
       } catch (err) {
-        console.error("Gagal mengambil gambar default dokumen", err);
+        console.error("Gagal mengambil gambar default", err);
       }
     } else {
       currentItem.url_foto.forEach((file, i) => {
@@ -168,11 +182,11 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
     const { name, value } = e.target;
 
     if (name === "kategori") {
-      if (value === "Dokumen") {
+      if (kategoriOtomatis.includes(value)) {
         setCurrentItem((prev) => ({
           ...prev,
           kategori: value,
-          url_foto: [DokumenDefault, null, null, null],
+          url_foto: [defaultImages[value], null, null, null],
         }));
       } else {
         setCurrentItem((prev) => ({
@@ -323,6 +337,10 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
                 <option value="Aksesoris">Aksesoris</option>
                 <option value="Elektronik">Elektronik</option>
                 <option value="Pakaian">Pakaian</option>
+                <option value="SIM">SIM</option>
+                <option value="KTP">KTP</option>
+                <option value="STNK">STNK</option>
+                <option value="ATM">ATM</option>
                 <option value="Dokumen">Dokumen</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
@@ -336,7 +354,7 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
                 <option value="ditemukan">Ditemukan</option>
                 <option value="arsip">Arsip</option>
               </select>
-              {currentItem.kategori !== "Dokumen" ? (
+              {!kategoriOtomatis.includes(currentItem.kategori) ? (
                 [0, 1, 2, 3].map((i) => (
                   <div key={i} className="mb-2">
                     <label>Foto {i + 1}</label>
@@ -352,13 +370,14 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
                   <label>Foto (Otomatis)</label>
                   <div className="w-full border p-2 rounded bg-gray-100">
                     <img
-                      src={DokumenDefault}
-                      alt="Foto default dokumen"
+                      src={defaultImages[currentItem.kategori]}
+                      alt={`Foto default ${currentItem.kategori}`}
                       className="max-h-48 mx-auto"
                     />
                   </div>
                   <small className="text-sm text-gray-500 italic">
-                    Gambar ini akan otomatis digunakan untuk kategori Dokumen.
+                    Gambar ini akan otomatis digunakan untuk kategori{" "}
+                    {currentItem.kategori}.
                   </small>
                 </div>
               )}
