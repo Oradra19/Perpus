@@ -26,7 +26,7 @@ const HomePage = () => {
   const fetchData = async () => {
     try {
       const lostItemsResponse = await api.get(
-        "http://localhost:3000/api/barang/status/hilang"
+        "https://perpus-be.vercel.app/api/barang/status/hilang"
       );
 
       if (Array.isArray(lostItemsResponse.data)) {

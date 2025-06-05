@@ -21,9 +21,9 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
       try {
-        const lostItemsResponse = await api.get('http://localhost:3000/api/barang/status/hilang');
-        const foundItemsResponse = await api.get('http://localhost:3000/api/barang/status/ditemukan');
-        const archivedItemsResponse = await api.get('http://localhost:3000/api/barang/status/arsip');
+        const lostItemsResponse = await api.get('https://perpus-be.vercel.app/api/barang/status/hilang');
+        const foundItemsResponse = await api.get('https://perpus-be.vercel.app/api/barang/status/ditemukan');
+        const archivedItemsResponse = await api.get('https://perpus-be.vercel.app/api/barang/status/arsip');
 
         setLostItemsData(Array.isArray(lostItemsResponse.data) ? lostItemsResponse.data : []);
         setFoundItemsData(Array.isArray(foundItemsResponse.data) ? foundItemsResponse.data : []);

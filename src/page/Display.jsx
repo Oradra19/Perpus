@@ -15,7 +15,7 @@ const Display = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/barang/status/hilang');
+        const res = await axios.get('https://perpus-be.vercel.app/api/barang/status/hilang');
         if (Array.isArray(res.data)) {
           const sorted = res.data.sort((a, b) =>
             new Date(b.tanggal_ditemukan) - new Date(a.tanggal_ditemukan)

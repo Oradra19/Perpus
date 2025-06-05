@@ -23,7 +23,7 @@ const ArchivedItemsTable = ({ archivedItemsData, refreshData }) => {
 
   const updateNoPengambil = async ({ id, no_pengambil, status_barang }) => {
     const res = await axios.put(
-      `http://localhost:3000/api/barang/${id}/no_pengambil`,
+      `https://perpus-be.vercel.app/api/barang/${id}/no_pengambil`,
       {
         no_pengambil,
         status_barang,
@@ -65,7 +65,7 @@ const ArchivedItemsTable = ({ archivedItemsData, refreshData }) => {
 
     if (confirmation.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/api/barang/${id}`);
+        await axios.delete(`https://perpus-be.vercel.app/api/barang/${id}`);
         refreshData();
         Swal.fire("Berhasil!", "Item berhasil dihapus.", "success");
       } catch {

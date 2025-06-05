@@ -15,7 +15,7 @@ const DetailBarang = () => {
     const fetchBarang = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/barang/${id}`
+          `https://perpus-be.vercel.app/api/barang/${id}`
         );
         const data = response.data;
         setBarang(data);
@@ -27,7 +27,7 @@ const DetailBarang = () => {
         }
 
         const lostItemsResponse = await axios.get(
-          "http://localhost:3000/api/barang/status/hilang"
+          "https://perpus-be.vercel.app/api/barang/status/hilang"
         );
 
         if (Array.isArray(lostItemsResponse.data)) {

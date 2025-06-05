@@ -43,7 +43,7 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
 
   const updateNoPengambil = async ({ id, no_pengambil, status_barang }) => {
     const res = await axios.put(
-      `http://localhost:3000/api/barang/${id}/no_pengambil`,
+      `https://perpus-be.vercel.app/api/barang/${id}/no_pengambil`,
       {
         no_pengambil,
         status_barang,
@@ -101,7 +101,7 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
 
     if (confirmation.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/api/barang/${id}`);
+        await axios.delete(`https://perpus-be.vercel.app/api/barang/${id}`);
         refreshData();
         Swal.fire("Berhasil!", "Item berhasil dihapus.", "success");
       } catch {
@@ -160,12 +160,12 @@ const LostItemsTable = ({ lostItemsData, refreshData }) => {
       if (editingIndex !== null) {
         const editedItem = filteredItems[editingIndex];
         await axios.put(
-          `http://localhost:3000/api/barang/${editedItem.id}`,
+          `https://perpus-be.vercel.app/api/barang/${editedItem.id}`,
           formData
         );
         Swal.fire("Berhasil!", "Data berhasil diperbarui.", "success");
       } else {
-        await axios.post("http://localhost:3000/api/barang", formData);
+        await axios.post("https://perpus-be.vercel.app/api/barang", formData);
         Swal.fire("Berhasil!", "Data berhasil ditambahkan.", "success");
       }
       refreshData();
