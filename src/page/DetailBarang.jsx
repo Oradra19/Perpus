@@ -23,7 +23,7 @@ const DetailBarang = () => {
         if (Array.isArray(data.foto) && data.foto.length > 0) {
           const fotoUrls = data.foto.map((f) => f.url_foto);
           setFotoList(fotoUrls);
-          setSelectedImage(fotoUrls[0]); // atau dari data.is_utama
+          setSelectedImage(fotoUrls[0]); 
         }
 
         const lostItemsResponse = await axios.get(
