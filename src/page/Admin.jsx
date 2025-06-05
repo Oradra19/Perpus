@@ -5,7 +5,7 @@ import api from 'axios';
 import LostItemsTable from '../componen/LostItemsTable'; 
 import FoundItemsTable from '../componen/FoundItemsTable'; 
 import ArchivedItemsTable from '../componen/ArchivedItemsTable'; 
-import Logo from '../assets/Logo.png';
+import Logo from '../assets/logo.png';
 
 const AdminDashboard = () => {
   const [lostItemsData, setLostItemsData] = useState([]);
