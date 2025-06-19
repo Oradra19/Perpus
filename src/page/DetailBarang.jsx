@@ -96,9 +96,15 @@ const DetailBarang = () => {
             <p className="text-gray-600 mb-4">
               <strong>Keterangan:</strong> {barang.deskripsi}
             </p>
-            <button className="bg-yellow-400 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition">
-              Hubungi Admin
-            </button>
+            <a
+  href="https://wa.me/6281326859003" // ganti dengan nomor admin
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-yellow-400 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-500 transition inline-block"
+>
+  Hubungi Admin
+</a>
+
           </div>
         </div>
 

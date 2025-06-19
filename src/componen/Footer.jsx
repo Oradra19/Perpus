@@ -22,12 +22,12 @@ const Footer = () => {
       <div className="bg-[#fbb040] text-[#24348b] text-center text-sm py-4 flex flex-col md:flex-row justify-between items-center px-4">
         <p>© All rights reserved by UMS Library and Digital Services Center - 2024™</p>
         <div className="flex space-x-4 mt-2 md:mt-0">
-          <a href="#"><FaTwitter size={24} /></a>
-          <a href="#"><FaFacebookF size={24} /></a>
-          <a href="#"><FaInstagram size={24} /></a>
-          <a href="#"><FaYoutube size={24} /></a>
-          <a href="#"><FaTiktok size={24} /></a>
-          <a href="#"><MdEmail size={24} /></a>
+          <a href="https://x.com/PerpusUMS"><FaTwitter size={24} /></a>
+          <a href="https://www.facebook.com/profile.php?id=100014497126134"><FaFacebookF size={24} /></a>
+          <a href="https://www.instagram.com/perpusums/"><FaInstagram size={24} /></a>
+          <a href="https://www.youtube.com/@PerpustakaanUMSurakarta"><FaYoutube size={24} /></a>
+          <a href="https://www.tiktok.com/@perpusums"><FaTiktok size={24} /></a>
+          <a href="mailto:perpus@ums.ac.id"><MdEmail size={24} /></a>
         </div>
       </div>
     </footer>
